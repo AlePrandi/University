@@ -1,0 +1,23 @@
+Prog 1 - LAB
+
+C:\Users\Paolo>dir
+
+C:\Users\Paolo>cd Documenti
+
+C:\Users\Paolo\Documenti>mkdir Prova
+
+C:\Users\Paolo\Documenti>cd Prova
+
+C:\Users\Paolo\Documenti\Prova>copy NUL importante.txt
+
+C:\Users\Paolo\Documenti\Prova>ren importante.txt rilevante.txt
+
+C:\Users\Paolo\Documenti\Prova>copy rilevante.txt C:\Users\Paolo\Documenti\prova\rilevanteCopia.txt
+
+C:\Users\Paolo\Documenti\Prova>copy rilevante.txt .\rilevanteCopia2.txt
+
+C:\Users\Paolo\Documenti\Prova>del rilevanteCopia.txt
+
+C:\Users\Paolo\Documenti\Prova>del rilevanteCopia2.txt
+
+C:\Users\Paolo\Documenti\Prova>start notepad++ rilevante.txt
