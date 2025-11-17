@@ -15,18 +15,20 @@ int main(void)
 
 int fact(int num)
 {
+    int ret = 0;
     if (num >= 0)
     {
         if (num == 0)
         {
-            return 1;
+            ret = 1;
         }
         else
         {
-            return num * fact(num - 1);
+            ret = num * fact(num - 1);
         }
     }else{
         printf("numero non valido");
-        return 0;
+        ret = 0;
     }
+    return ret;
 }
