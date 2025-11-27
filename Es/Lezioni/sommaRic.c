@@ -15,6 +15,9 @@ int main(void)
     stampaCre(N, arr, 0);
     puts("");
     stampaDec(N, arr, 0);
+    char stringa[10] = "ciao";
+    int lung = lung_stringa(stringa);
+    printf("la stringa %s e' lunga %d char\n", stringa, lung);
     return 0;
 }
 
@@ -91,3 +94,12 @@ int max(const size_t aLen, const size_t a[], size_t i){
         return(a[i] > maxCoda) ? a[i] : maxCoda;
     }
 }
+
+int lung_stringa(const char* s){
+    if(*s == '\0'){
+        return 0;
+    }else{
+        return 1 + lung_stringa(s + 1);
+    }
+}
+
