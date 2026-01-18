@@ -103,14 +103,15 @@ bool matrici_uguali(const int matA[ROWS][COLS],
                     const int matB[ROWS][COLS])
 {
     // COMPLETARE
+    bool ret = true;
     for(size_t i = 0; i < ROWS; i++){
         for(size_t k = 0; k < COLS; k++){
             if(matA[i][k] != matB[i][k]){
-                return false;
+                ret = false;
             }
         }
     }
-    return true;
+    return ret;
 }
 
 //------------------------------------------------------------------
