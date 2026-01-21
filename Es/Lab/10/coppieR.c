@@ -229,7 +229,7 @@ int somma_diff_covR(const int a[], const int b[],
     }
     else
     {
-        return (a[right - 1] - b[right - 1]) + somma_diff_conR(a, b, left, right - 1);
+        return (a[right - 1] - b[right - 1]) + somma_diff_covR(a, b, left, right - 1);
     }
 }
 
