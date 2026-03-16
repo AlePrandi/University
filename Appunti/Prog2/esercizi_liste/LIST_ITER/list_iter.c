@@ -1,5 +1,6 @@
-#include "list_iter.h"
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct listNode ListNode, *ListNodePtr;
 
@@ -11,121 +12,123 @@ struct listNode {
 // Ritorna una lista contenente tutti i numeri interi 
 // compresi tra @m ed @n, estremi inclusi. 
 ListNodePtr fromTo_iter(int m, int n){
-    if(m > n) return NULL;
-
-    ListNodePtr head = NULL;
-    ListNodePtr tail = NULL;
-
-    for(int i = m; i <= n;i++){
-        ListNodePtr newnode = malloc(sizeof(ListNode));
-        newnode->data = i;
-        newnode->next = NULL;
-
-        if(head == NULL){
-            head = newnode;
-            tail = newnode;
-        }else{
-            tail->next = newnode;
-            tail = newnode;
-        }
-    }
-    return head;
-}
-
-// Ritorna true se tutti gli elementi nella lista @ls1 
-// compaiono nello stesso ordine anche nella lista @ls2.
-_Bool included_iter(ListNodePtr ls1, ListNodePtr ls2){
-    bool allEq = true;
-    if(!ls1) return true;
-    if(!ls2) return false;
-    while(ls2 != NULL){
-        if (ls1->data == ls2->data)
-        {
-            ls1 = ls1->next;
-            if(ls1 == NULL) allEq = true;
-        }else allEq = false;
-
-        ls2 = ls2->next;
+    ListNodePtr lista = NULL;
+    for(int i = n; i >= m; i--){
+        ListNodePtr node = (ListNodePtr)malloc(sizeof(ListNode));
+        node->data = i;
+        node->next = lista;
+        lista = node;
     }
 
-    return allEq;
-}
-
-// Ritorna una nuova lista con gli elementi di @ls
-// in ordine inverso (non modifica la lista @ls).
-ListNodePtr reverse_iter(ListNodePtr ls){
-    if(!ls) return NULL;
-    ListNodePtr head = NULL;
-    while(ls != NULL){
-        ListNodePtr Newnode = malloc(sizeof(ListNode));
-        Newnode->data = ls->data;
-
-        Newnode->next = head;
-        head = Newnode;
-
-        ls = ls->next;
-    }
-    return head;
-}
-
-// Ritorna la lista i cui elementi sono le somme 
-// a coppie degli elementi corrispondenti di due liste @ls1 e @ls2 
-// di uguale lunghezza (non modifica la liste @ls1 e @ls2).
-ListNodePtr zipSum_iter(ListNodePtr ls1, ListNodePtr ls2){
-    if(!ls1 || !ls2) return NULL;
-    ListNodePtr head = NULL;
-    ListNodePtr tail = NULL;
-    while(ls1 && ls2){
-        ListNodePtr newnode = malloc(sizeof(ListNode));
-        newnode->data = ls1->data + ls2->data;
-        newnode->next = NULL;
-        if(!head){
-            head = newnode;
-            tail = newnode;
-        }else{
-            tail->next = newnode;
-            tail = newnode;
-        }
-
-        ls1 = ls1->next;
-        ls2 = ls2->next;
-    }
-    return head;
-}
-
-// Conta il numero di occorrenze di @x nella lista @ls.
-int occurrences_iter(ListNodePtr ls, int x){
-    if(!ls) return 0;
-    int occ = 0;
-    while(ls){
-        if(ls->data == x)
-            occ++;
-
-        ls = ls->next;
-    }
-    return occ;
+    return lista;
 }
 
 // Toglie tutte le occorrenze di @x dalla lista *@p_ls  (modifica *@p_ls).
 void remove_all_iter(ListNodePtr *p_ls, int x){
-    while(*p_ls){
-        if((*p_ls)->data == x){
-            ListNodePtr *temp = *p_ls;
-            *p_ls = (*p_ls)->next;
+    ListNodePtr curr, prev = NULL, temp;
+    curr = *p_ls;
+    while(curr){
+        if(curr->data == x){
+
+            if(prev) prev->next = curr->next;
+            else *p_ls = curr->next;
+
+            temp = curr;
+            curr = curr->next;
             free(temp);
+        }else{
+            prev = curr;
+            curr = curr->next;
         }
-        p_ls = &(*p_ls)->next;
     }
 }
 
-// Duplica tutti i nodi della lista @ls che contengono un numero pari (modifica @ls).
-void duplicate_even_iter(ListNodePtr ls){
-    while(ls){
-        if(ls->data % 2 == 0){
-            ListNodePtr temp = ls;
-            
+void remove_all_rec(ListNodePtr *p_ls, int x){
+    ListNodePtr l, temp;
+    l = *p_ls;
+    if(l){
+        remove_all_rec(&(l->next), x);
+        if(l->data == x){
+            temp = l;
+            *p_ls = l->next;
+            free(temp);
         }
+    }
+}
+
+// Ritorna una nuova lista con gli elementi di @ls 
+// in ordine inverso (non modifica la lista @ls).
+ListNodePtr reverse_iter(ListNodePtr ls){
+    ListNodePtr lista = NULL;
+    while(ls){
+        ListNodePtr node = (ListNodePtr)malloc(sizeof(ListNode));
+        node->data = ls->data;
+        node->next = lista;
+        lista = node;
 
         ls = ls->next;
     }
+
+    return lista;
+}
+
+ListNodePtr reverse_rec(ListNodePtr ls){ //DIFFICILE
+    if(ls){
+        ListNodePtr temp, curr, node;
+        node = (ListNodePtr) malloc(sizeof(ListNode));
+        node->data = ls->data;
+        node->next = NULL;
+
+        if(ls->next){
+            temp = reverse_rec(ls->next);
+        }
+    }
+}
+
+ListNodePtr crealista(int* arr, int len){
+    ListNodePtr node;
+    ListNodePtr lista = NULL;
+    for(int i = len - 1;i >= 0;i--){
+        node = (ListNodePtr)malloc(sizeof(ListNode));
+        node->data = arr[i];
+        node->next = lista;
+        lista = node;
+    }
+
+    return lista;
+}
+
+void stampalista(ListNodePtr l){
+    printf("Lista: \n");
+    while(l){
+        printf("%d ", l->data);
+        l = l->next;
+    }
+    puts("");
+}
+
+void freelista(ListNodePtr l){
+    if(l){
+        freelista(l->next);
+        free(l);
+    }
+}
+
+int main(){
+
+    int v[] = {1,2,3,4,5,6,7,8,9,0};
+    ListNodePtr l1 = crealista(v, sizeof(v)/sizeof(int)), l2;
+    stampalista(l1);
+    l2 = reverse_iter(l1);
+    stampalista(l2);
+
+    remove_all_iter(&l1, 5);
+    stampalista(l1);
+
+    remove_all_rec(&l1, 6);
+    stampalista(l1);
+
+    freelista(l1);
+    freelista(l2);
+    return 0;
 }
