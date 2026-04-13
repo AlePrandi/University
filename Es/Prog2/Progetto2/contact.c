@@ -38,32 +38,60 @@ int test_contactEq() {
     int ok = 1;
     Contact c1, c2;
 
-    // TEST diversi
     c1.name = "Pippo";
     c1.surname = "Pluto";
-
-    c2.name = "Paperino";
-    c2.surname = "Pluto";
-
-    if(contactEq(c1, c2) != 0)
-        ok = 0;
-
-    //TEST uguali
-    c2.name = "Pippo";
-    c2.surname = "Pluto";
+    c2.name = "pippo";
+    c2.surname = "pluto";
     if(contactEq(c1, c2) != 1)
         ok = 0;
 
-    //TEST null
+    // non serve
+    c1.name = "Pippo";
+    c1.surname = "Pluto";
+    c2.name = "Pip";
+    c2.surname = "Pluto";
+    if(contactEq(c1, c2) != 0)
+        ok = 0;
+        
+    //non serve
+    c1.name = "Pippo";
+    c1.surname = "Pluto";
+    c2.name = "Pippo";
+    c2.surname = "Pluta";
+    if(contactEq(c1, c2) != 0)
+        ok = 0;
+        
+    c1.name = "Pippo";
+    c1.surname = "Pluto";
+    c2.name = "Paperino";
+    c2.surname = "Pluto";
+    if(contactEq(c1, c2) != 0)
+        ok = 0;
+        
+    c1.name = "Pippo";
+    c1.surname = "Pluto";
+    c2.name = "Pippo";
+    c2.surname = "Bruto";
+    if(contactEq(c1, c2) != 0)
+        ok = 0;
+        
     c2.name = NULL;
     c2.surname = "Pluto";
     if(contactEq(c1, c2) != -99)
+        ok = 0;
+        
+    //vuoto <- non serve
+    c1.name = "";
+    c1.surname = "";
+    c2.name = "";
+    c2.surname = "";
+    if(contactEq(c1, c2) != 1)
         ok = 0;
 
     if(ok)
         printf("TEST PASSED\n");
     else
-        printf("TEST FAILED \n");
+        printf("TEST FAILED\n");
     
     return 0; 
 }
@@ -105,34 +133,60 @@ int contactEqEff(const Contact *pc1, const Contact *pc2) {
 
 int test_contactEqEff() {
     int ok = 1;
-    Contact *c1, *c2;
+    Contact c1, c2;
 
-    // TEST diversi
-    c1->name = "Pippo";
-    c1->surname = "Pluto";
-
-    c2->name = "Paperino";
-    c2->surname = "Pluto";
-
-    if(contactEqEff(c1, c2) != 0)
+    c1.name = "Pippo";
+    c1.surname = "Pluto";
+    c2.name = "pippo";
+    c2.surname = "pluto";
+    if(contactEqEff(&c1, &c2) != 1)
         ok = 0;
 
-    //TEST uguali
-    c2->name = "Pippo";
-    c2->surname = "Pluto";
-    if(contactEqEff(c1, c2) != 1)
+    c1.name = "Pippo";
+    c1.surname = "Pluto";
+    c2.name = "Pip";
+    c2.surname = "Pluto";
+    if(contactEqEff(&c1, &c2) != 0)
+        ok = 0;
+        
+    c1.name = "Pippo";
+    c1.surname = "Pluto";
+    c2.name = "Pippo";
+    c2.surname = "Pluta";
+    if(contactEqEff(&c1, &c2) != 0)
+        ok = 0;
+        
+    c1.name = "Pippo";
+    c1.surname = "Pluto";
+    c2.name = "Paperino";
+    c2.surname = "Pluto";
+    if(contactEqEff(&c1, &c2) != 0)
+        ok = 0;
+        
+    c1.name = "Pippo";
+    c1.surname = "Pluto";
+    c2.name = "Pippo";
+    c2.surname = "Bruto";
+    if(contactEqEff(&c1, &c2) != 0)
         ok = 0;
 
-    //TEST null
-    c2->name = NULL;
-    c2->surname = "Pluto";
-    if(contactEqEff(c1, c2) != -99)
+    c2.name = NULL;
+    c2.surname = "Pluto";
+    if(contactEqEff(&c1, &c2) != -99)
         ok = 0;
+        
+    c1.name = "";
+    c1.surname = "";
+    c2.name = "";
+    c2.surname = "";
+    if(contactEqEff(&c1, &c2) != 1)
+        ok = 0;
+        
 
     if(ok)
         printf("TEST PASSED\n");
     else
-        printf("TEST FAILED \n");
+        printf("TEST FAILED\n");
 
     return 0;
 }
@@ -182,7 +236,7 @@ int test_contactCmp() {
     if(ok)
         printf("TEST PASSED\n");
     else
-        printf("TEST FAILED \n");
+        printf("TEST FAILED\n");
 
     return 0;
 }
@@ -205,6 +259,11 @@ int contactCmpEff(const Contact *pc1, const Contact *pc2) {
         }
     }
 
+    if(pc1->surname[j] == '\0' && pc2->surname[j] != '\0')
+        return -1;
+    if(pc2->surname[j] == '\0' && pc1->surname[j] != '\0')
+        return 1;
+
     j = 0;
     while(pc1->name[j] != '\0' || pc2->name[j] != '\0'){
         if(tolower(pc1->name[j]) == tolower(pc2->name[j]))
@@ -216,6 +275,11 @@ int contactCmpEff(const Contact *pc1, const Contact *pc2) {
         }
     }
 
+    if(pc1->name[j] == '\0' && pc2->name[j] != '\0')
+        return -1;
+    if(pc2->name[j] == '\0' && pc1->name[j] != '\0')
+        return 1;
+
     return 0;
 
 }
@@ -224,44 +288,41 @@ int contactCmpEff(const Contact *pc1, const Contact *pc2) {
 // come per test_contactEq
 
 int test_contactCmpEff() {
-
-    int ok = 1;
-    Contact *c1, *c2;
+int ok = 1;
+    Contact c1, c2;
 
     // TEST diversi
-    c1->name = "Pippo";
-    c1->surname = "Pluto";
+    c1.name = "Paperino";
+    c1.surname = "Pluto";
+    c2.name = "Pluto";
+    c2.surname = "Pluto";
+    if(contactCmpEff(&c1, &c2) != -1)
+        ok = 0;
 
-    c2->name = "Paperino";
-    c2->surname = "Pluto";
 
-    if(contactEqEff(c1, c2) != 0)
+    c1.name = "Pippo";
+    c1.surname = "Pluto";
+    c2.name = "Carlo";
+    c2.surname = "bruto";
+    if(contactCmpEff(&c1, &c2) != 1)
         ok = 0;
 
     //TEST uguali
-    c2->name = "Pippo";
-    c2->surname = "Pluto";
-    if(contactEqEff(c1, c2) != 1)
+    c2.name = "Pippo";
+    c2.surname = "Pluto";
+    if(contactCmpEff(&c1, &c2) != 0)
         ok = 0;
 
     //TEST null
-    c2->name = NULL;
-    c2->surname = "Pluto";
-    if(contactEqEff(c1, c2) != -99)
+    c2.name = NULL;
+    c2.surname = "Pluto";
+    if(contactCmpEff(&c1, &c2) != -99)
         ok = 0;
 
     if(ok)
         printf("TEST PASSED\n");
     else
-        printf("TEST FAILED \n");
+        printf("TEST FAILED\n");
 
     return 0;
-}
-
-int main(void){
-    int Eq = test_contactEq();
-    int EqEff = test_contactEqEff();
-    int Cmp = test_contactCmp();
-    int CmpEff = test_contactCmpEff();
-
 }

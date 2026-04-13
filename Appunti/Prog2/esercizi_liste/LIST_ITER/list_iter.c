@@ -98,6 +98,78 @@ ListNodePtr crealista(int* arr, int len){
     return lista;
 }
 
+// Ritorna la lista i cui elementi sono le somme a coppie degli elementi 
+// corrispondenti di due liste @ls1 e @ls2 di uguale lunghezza 
+// (non modifica la liste @ls1 e @ls2).
+ListNodePtr zipSum_iter(ListNodePtr ls1, ListNodePtr ls2){
+    ListNodePtr lista;
+    while(ls1 && ls2){
+        ListNodePtr node = (ListNodePtr)malloc(sizeof(ListNode));
+        node->data = ls1->data + ls2->data;
+        node->next = lista;
+        lista = node;
+
+        ls1 = ls1->next;
+        ls2 = ls2->next;
+    }
+
+    return lista;
+}
+
+// Ritorna true se tutti gli elementi nella lista @ls1 compaiono
+// nello stesso ordine anche nella lista @ls2.
+_Bool included_iter(ListNodePtr ls1, ListNodePtr ls2){
+    bool tro = true;
+    while(ls1 && tro){
+        tro = false;
+        while(ls2 && !tro){
+            if(ls1->data == ls2->data)
+                tro = true;
+
+            ls2 = ls2->next;
+        }
+        ls1 = ls1->next;
+    }
+
+    return tro;
+}
+
+// Conta il numero di occorrenze di @x nella lista @ls.
+int occurrences_iter(ListNodePtr ls, int x){
+    int cont = 0;
+    while(ls){
+        if(ls->data == x)
+            cont++;
+
+        ls = ls->next;
+    }
+
+    return cont;
+}
+
+// Duplica tutti i nodi della lista @ls 
+//  che contengono un numero pari (modifica @ls).
+void duplicate_even_iter(ListNodePtr *ls){
+    ListNodePtr curr, prev = NULL;
+    curr = *ls;
+    while(curr){
+        if(curr->data % 2 == 0){
+            ListNodePtr node = (ListNodePtr)malloc(sizeof(ListNode));
+            node->data = curr->data;
+            node->next = curr;
+
+            if(prev)prev->next = node;
+            else *ls = node;
+
+            prev = curr;
+            curr = curr->next;
+        }else{
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+}
+
 void stampalista(ListNodePtr l){
     printf("Lista: \n");
     while(l){
@@ -107,10 +179,19 @@ void stampalista(ListNodePtr l){
     puts("");
 }
 
-void freelista(ListNodePtr l){
+void freelistaRec(ListNodePtr l){
     if(l){
         freelista(l->next);
         free(l);
+    }
+}
+
+void freelistaIter(ListNodePtr l){
+    ListNodePtr temp;
+    while(l){
+        temp = l;
+        l = l->next;
+        free(temp);
     }
 }
 
@@ -128,7 +209,7 @@ int main(){
     remove_all_rec(&l1, 6);
     stampalista(l1);
 
-    freelista(l1);
-    freelista(l2);
+    freelistaRec(l1);
+    freelistaIter(l2);
     return 0;
 }
