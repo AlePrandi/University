@@ -46,16 +46,51 @@ ReportPtr minMaxLevel(IntTree tree){
  * - OUT_OF_MEMORY se la malloc fallisce,
  * - ERROR se 'path' contiene un carattere diverso da 'L' o 'R' prima di uscire dall'albero.
  */
-Response put(IntTree *treePtr, char *path, int e);
+Response put(IntTree *treePtr, char *path, int e){
+
+}
 
 /**
  * @brief Controlla se il secondo albero è una "potatura" del primo
  */
-_Bool isPruning(IntTree tree, IntTree pruned);
+_Bool isPruning(IntTree tree, IntTree pruned){
+    if(!tree || (tree && !pruned)) return 0;
+
+    int pruning = 1;
+    if(tree->data == pruned->data){
+        if(isPruning(tree->left, pruned)){
+            
+        }
+    }
+
+    return pruning;
+}
 
 /**
  * @brief Dato un ARB restituisce un array che contiene tutti gli elementi dell'ARB
  * in un ordine tale che, se gli elementi sono tutti distinti, allora
  * inserendoli in quell'ordine nell'ARB vuoto si ricostruisce l'ARB originale.
  */
-int *arbToArray(IntTree tree);
+int *arbToArray(IntTree tree){
+
+}
+
+
+int countNodi(IntTree tree){
+    if(!tree) return 0;
+    return 1 + countNodi(tree->left) + countNodi(tree->right);
+}
+
+int height_rec(IntTree tree, int depth){
+    if(!tree) return depth-1;
+    if(!tree->left && !tree->right) return depth;
+
+    int dLeft = height_rec(tree->left, depth + 1);
+    int dRight = height_rec(tree->right, depth + 1); 
+
+    return (dLeft > dRight) ? dLeft : dRight;
+}
+
+int height(IntTree tree){
+    return height_rec(tree, 0);
+}
