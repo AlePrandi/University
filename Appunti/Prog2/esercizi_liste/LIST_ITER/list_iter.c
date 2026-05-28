@@ -181,7 +181,7 @@ void stampalista(ListNodePtr l){
 
 void freelistaRec(ListNodePtr l){
     if(l){
-        freelista(l->next);
+        freelistaRec(l->next);
         free(l);
     }
 }
