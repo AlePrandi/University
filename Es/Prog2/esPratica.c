@@ -1,12 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "esPratica.h"
 
-void reverse (IntList *plst) {
+typedef struct list List, *ListPtr;
+
+struct list{
+    int data;
+    ListPtr next;
+};
+
+void reverse (ListPtr *plst) {
     if(!plst || !(*plst)) return;
-    IntList curr = *plst, inv = NULL;
+    ListPtr curr = *plst, inv = NULL;
     while(curr){
-        IntList temp = curr;
+        ListPtr temp = curr;
         curr = curr->next;
         
         temp->next = inv;
@@ -17,10 +23,10 @@ void reverse (IntList *plst) {
 }
 
 
-IntList reverse_rec(IntList head){
+ListPtr reverse_rec(ListPtr head){
     if(!head || !head->next) return head;
     
-    IntList newHead = reverse_rec(head->next);
+    ListPtr newHead = reverse_rec(head->next);
     
     head->next->next = head;
     head->next = NULL;
@@ -28,21 +34,27 @@ IntList reverse_rec(IntList head){
     return newHead;
 }
 
-void reverse (IntList *plst) {
+void reverse (ListPtr *plst) {
     *plst = reverse_rec(*plst);
 }
 
 
-List divisorList(int num, int i){
+ListPtr divisorList(int num, int i){
     if(i > num) return NULL;
     if(num % i == 0){
-        List node = malloc(sizeof(ListNode));
+        ListPtr node = malloc(sizeof(List));
         if(!node) return NULL;
         node->data = i;
         node->next = divisorList(num, i+1);
         return node;
     }
     return divisorList(num, i+1);
+}
+
+ListPtr *invertiLista(ListPtr *lPtr){
+    if(!lPtr || !(*lPtr)) return NULL;
+    if(!(*lPtr)->next) return lPtr;
+    
 }
 
 int main(void){
