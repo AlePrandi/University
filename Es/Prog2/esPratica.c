@@ -219,6 +219,83 @@ ListPtr inserimentoOrdinato(ListPtr head, int val){
     return head;
 }
 
+ListPtr eliminaNodo(ListPtr head, int target){
+    if(!head) return NULL;
+    ListPtr prec = NULL;
+    ListPtr curr = head;
+    while(curr){
+        if(curr->data == target){
+            if(prec){
+                prec->next = curr->next;
+            }else{
+                head = curr->next;
+            }
+            ListPtr temp = curr;
+            curr = curr->next;
+            free(temp);
+        }else{
+            prec = curr;
+            curr = curr->next;
+        }
+    }
+    return head;
+}
+
+TreePtr inserisciBST(TreePtr root, int val){
+    if(!root){
+        TreePtr tree = (TreePtr)malloc(sizeof(Tree));
+        if(!tree) return NULL;
+        tree->data = val;
+        tree->left = tree->right = NULL;
+        return tree;
+    }else{
+        if(root->data < val) root->right = inserisciBST(root->right, val);
+        else if(root->data > val) root->left = inserisciBST(root->left, val);
+        return root;
+    }
+}
+
+ListPtr eliminaDivisibili(ListPtr head, int k){
+    if(!head) return NULL;
+    ListPtr prec = NULL;
+    ListPtr curr = head;
+    while(curr){
+        if(curr->data % k == 0){
+            if(prec){
+                prec->next = curr->next;
+            }else{
+                head = curr->next;
+            }
+            ListPtr temp = curr;
+            curr = curr->next;
+            free(temp);
+        }else{
+            prec = curr;
+            curr = curr->next;
+        }
+    }
+
+    return head;
+}
+
+ListPtr concatena(ListPtr l1, ListPtr l2) {
+    if (!l1) return l2;
+    l1->next = concatena(l1->next, l2);
+    return l1;
+}
+
+ListPtr livelloK(TreePtr root, int k){
+    if(!root) return NULL;
+    if(k == 0){
+        ListPtr node = (ListPtr)malloc(sizeof(List));
+        node->data = root->data;
+        node->next = NULL;
+        return node;
+    }else{
+        return concatena(livelloK(root->left, k-1), livelloK(root->right, k -1));
+    }
+}
+
 int main(void){
 
     return 0;
