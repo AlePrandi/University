@@ -188,14 +188,10 @@ int wrapperIsValidBST(TreePtr root){
     return isValidBST(root, INT_MIN, INT_MAX);
 }
 
-int sommaLivelloK(TreePtr root, int k, int curr){
+int sommaLivelloK(TreePtr root, int k){
     if(!root) return 0;
-    if(k == curr) return root->data;
-    return sommaLivelloK(root->left, k, curr+1) + sommaLivelloK(root->right, k, curr+1);
-}
-
-int wrapperSommaLivelloK(TreePtr root, int k){
-    return sommaLivelloK(root, k, 0);
+    if(k == 0) return root->data;
+    return sommaLivelloK(root->left, k-1) + sommaLivelloK(root->right, k-1);
 }
 
 ListPtr inserimentoOrdinato(ListPtr head, int val){
