@@ -90,21 +90,6 @@ void eliminaDuplicati(ListPtr *lPtr){
     }
 }
 
-void eliminaDuplicatiGem(ListPtr *lPtr){
-    //iterativo
-    if(!lPtr || !(*lPtr)) return;
-    ListPtr curr = *lPtr;
-    while(curr && curr->next){
-        if(curr->data == curr->next->data){
-            ListPtr temp = curr->next;
-            curr->next = curr->next->next;
-            free(temp);
-        }else{
-            curr = curr->next;
-        }
-    }
-}
-
 ListPtr fondiListe(ListPtr ls1, ListPtr ls2){
     if(!ls1 && !ls2) return NULL;
     if(!ls1) return ls2;
