@@ -50,7 +50,7 @@ char **leggi_lista(FILE *file_in, int *nof_elements)
 {
   if (file_in == NULL) return NULL;
   *nof_elements = 0;
-  char buff[50];
+  char buff[25];
   while (fgets(buff, sizeof(buff), file_in))
   {
     (*nof_elements)++;
@@ -60,13 +60,11 @@ char **leggi_lista(FILE *file_in, int *nof_elements)
 
   char **array = (char **)malloc(sizeof(char *) * (*nof_elements));
   if (!array) return NULL;
-  for (int i = 0; i < *nof_elements; i++)
-  {
-    fgets(buff, 50, file_in);
-    buff[strcspn(buff, "\n")] = '\0';
-
-    array[i] = malloc(strlen(buff) + 1);
+  int i = 0;
+  while(fgets(buff, 25, file_in)){
+    array[i] = malloc((strlen(buff)+1) * sizeof(char));
     strcpy(array[i], buff);
+    i++;
   }
   return array;
 }
@@ -80,6 +78,5 @@ void stampa_lista(char **array, int nof_elements)
   for (int i = 0; i < nof_elements; i++)
   {
     printf("%s", array[i]);
-    puts("");
   }
 }
